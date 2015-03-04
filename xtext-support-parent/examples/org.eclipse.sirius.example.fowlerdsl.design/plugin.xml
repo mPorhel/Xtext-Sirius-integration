@@ -14,4 +14,10 @@
            id="org.eclipse.sirius.example.fowlerdsl.design.OpenEmbeddedEditor">
      </javaActions>
   </extension>
+  <extension
+        point="org.eclipse.sirius.sessionManagerListener">
+     <listener
+           class="org.eclipse.sirius.example.fowlerdsl.design.FowlerSessionManagerListener">
+     </listener>
+  </extension>
 </plugin>
