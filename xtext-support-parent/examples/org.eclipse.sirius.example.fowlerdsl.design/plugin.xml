@@ -20,4 +20,12 @@
            class="org.eclipse.sirius.example.fowlerdsl.design.FowlerSessionManagerListener">
      </listener>
   </extension>
+  <extension id="fowlerValidationDecoratorProvider" name="FowlerValidationDecorations" point="org.eclipse.gmf.runtime.diagram.ui.decoratorProviders">
+      <decoratorProvider class="org.eclipse.sirius.example.fowlerdsl.design.FowlerValidationDecoratorProvider">
+         <Priority name="Lowest"/>
+         <object class="org.eclipse.sirius.diagram.ui.edit.api.part.IAbstractDiagramNodeEditPart(org.eclipse.sirius.diagram.ui)" id="SIRIUS_ABSTRACT_NODE_PRIMARY_VIEW"/>
+         <object class="org.eclipse.sirius.diagram.ui.edit.api.part.IDiagramEdgeEditPart(org.eclipse.sirius.diagram.ui)" id="SIRIUS_EDGE_PRIMARY_VIEW"/>                         
+         <context decoratorTargets="SIRIUS_ABSTRACT_NODE_PRIMARY_VIEW,SIRIUS_EDGE_PRIMARY_VIEW"/>
+      </decoratorProvider>
+   </extension>
 </plugin>
