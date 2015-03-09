@@ -3,15 +3,23 @@ package org.obeonetwork.dsl.viewpoint.xtext.support;
 import java.io.IOException;
 import java.util.Map;
 
+import org.eclipse.compare.CompareConfiguration;
+import org.eclipse.compare.CompareEditorInput;
+import org.eclipse.compare.CompareUI;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.compare.Comparison;
 import org.eclipse.emf.compare.EMFCompare;
+import org.eclipse.emf.compare.domain.ICompareEditingDomain;
+import org.eclipse.emf.compare.domain.impl.EMFCompareEditingDomain;
+import org.eclipse.emf.compare.ide.ui.internal.configuration.EMFCompareConfiguration;
+import org.eclipse.emf.compare.ide.ui.internal.editor.ComparisonEditorInput;
 import org.eclipse.emf.compare.merge.BatchMerger;
 import org.eclipse.emf.compare.merge.IBatchMerger;
 import org.eclipse.emf.compare.merge.IMerger;
@@ -20,6 +28,7 @@ import org.eclipse.emf.compare.scope.DefaultComparisonScope;
 import org.eclipse.emf.compare.scope.IComparisonScope;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.workspace.AbstractEMFOperation;
 import org.eclipse.sirius.business.internal.session.danalysis.DAnalysisSessionImpl;
@@ -89,5 +98,15 @@ public class XTextReloader extends Reloader {
 
         EcoreUtil.resolveAll(xtextVirtualResource);
         return xtextVirtualResource;
+    }
+
+    private void openCompareDialog(Resource resourceInSirius, Resource virtualResource, Comparison comparison) {
+        ICompareEditingDomain editingDomain = EMFCompareEditingDomain.create(resourceInSirius, virtualResource, null);
+        AdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+        CompareConfiguration compareConfiguration = new CompareConfiguration();
+        compareConfiguration.setRightEditable(false);
+        compareConfiguration.setRightLabel("External Change");
+        CompareEditorInput input = new ComparisonEditorInput(new EMFCompareConfiguration(compareConfiguration), comparison, editingDomain, adapterFactory);
+        CompareUI.openCompareDialog(input);
     }
 }
