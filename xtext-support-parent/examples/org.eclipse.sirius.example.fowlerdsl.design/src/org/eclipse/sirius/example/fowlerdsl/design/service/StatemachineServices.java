@@ -16,40 +16,31 @@ import org.eclipse.xtext.resource.XtextResource;
 
 public class StatemachineServices {
 
-	public EObject openTextEditor(EObject any) {
-		if (any != null && any.eResource() instanceof XtextResource
-				&& any.eResource().getURI() != null) {
+    public EObject openTextEditor(EObject any) {
+        if (any != null && any.eResource() instanceof XtextResource && any.eResource().getURI() != null) {
 
-			String fileURI = any.eResource().getURI().toPlatformString(true);
-			IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot()
-					.getFile(new Path(fileURI));
-			if (workspaceFile != null) {
-				IWorkbenchPage page = PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage();
-				try {
-					IEditorPart openEditor = IDE.openEditor(page,
-							workspaceFile,
-							"org.eclipse.xtext.example.fowlerdsl.Statemachine",
-							true);
-					if (openEditor instanceof AbstractTextEditor) {
-						ICompositeNode node = NodeModelUtils
-								.findActualNodeFor(any);
-						if (node != null) {
-							int offset = node.getOffset();
-							int length = node.getTotalEndOffset() - offset;
-							((AbstractTextEditor) openEditor).selectAndReveal(
-									offset, length);
-							System.out
-									.println("StatemachineServices.openTextEditor()");
-						}
-					}
-					// editorInput.
-				} catch (PartInitException e) {
-					// Put your exception handler here if you wish to.
-				}
-			}
-		}
-		System.out.println(any);
-		return any;
-	}
+            String fileURI = any.eResource().getURI().toPlatformString(true);
+            IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(fileURI));
+            if (workspaceFile != null) {
+                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                try {
+                    IEditorPart openEditor = IDE.openEditor(page, workspaceFile, "org.eclipse.xtext.example.fowlerdsl.Statemachine", true);
+                    if (openEditor instanceof AbstractTextEditor) {
+                        ICompositeNode node = NodeModelUtils.findActualNodeFor(any);
+                        if (node != null) {
+                            int offset = node.getOffset();
+                            int length = node.getTotalEndOffset() - offset;
+                            ((AbstractTextEditor) openEditor).selectAndReveal(offset, length);
+                            System.out.println("StatemachineServices.openTextEditor()");
+                        }
+                    }
+                    // editorInput.
+                } catch (PartInitException e) {
+                    // Put your exception handler here if you wish to.
+                }
+            }
+        }
+        System.out.println(any);
+        return any;
+    }
 }

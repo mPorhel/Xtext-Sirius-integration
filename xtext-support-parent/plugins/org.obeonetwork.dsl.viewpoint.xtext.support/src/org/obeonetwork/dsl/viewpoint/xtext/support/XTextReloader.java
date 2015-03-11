@@ -67,17 +67,14 @@ public class XTextReloader extends Reloader {
             final IBatchMerger merger = new BatchMerger(mergerRegistry);
 
             final TransactionalEditingDomain ted = session.getTransactionalEditingDomain();
-            AbstractEMFOperation operation = new AbstractEMFOperation(ted, "Reload resource", Maps.newHashMap()) {
+            AbstractEMFOperation operation = new AbstractEMFOperation(ted, "Update resource after external change", Maps.newHashMap()) {
 
                 protected IStatus doExecute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-
                     merger.copyAllRightToLeft(comparison.getDifferences(), new BasicMonitor());
-
                     return org.eclipse.core.runtime.Status.OK_STATUS;
                 }
             };
             return operation.execute(new NullProgressMonitor(), null);
-
         } catch (Exception e) {
             Activator.logError(e);
             return super.reload(resourceInSirius, session);
